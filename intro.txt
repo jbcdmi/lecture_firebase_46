@@ -1,0 +1,20 @@
+Database
+-> Offline (sharedpref, sql, hive) - phone
+-> Online - server
+	API - application programming interface (backend)
+	phone -> api -> server -> database
+
+-> direct online database
+Firebase tools (service)
+-> manully
+-> auto (CLI)
+
+Login system using offline database
+1-phone -> register
+2-phone -> login
+
+=====
+Firebase connection
+What is firebase?
+how many services in firebase?
+which type application create using firebase service?
