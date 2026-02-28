@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:136527670071:android:8456119d1e495391cb08b2",
+        "mobilesdk_app_id": "1:136527670071:android:7048c2e72f9cda8acb08b2",
         "android_client_info": {
-          "package_name": "com.example.lecture_firebase"
+          "package_name": "com.example.lecture46_firebase"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "136527670071-f98qkabhsbvf1msp2m39cjpualo8dks6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lecture46_firebase",
+            "certificate_hash": "67f81f7f1961012558266859685adbc1d5c677c8"
+          }
+        },
+        {
+          "client_id": "136527670071-nj0i0gt5mlfshj4b0clb5afgn81m1ll5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB62Cwj1H-fj4k06yS3s44jEmdcKlpCAQM"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136527670071-nj0i0gt5mlfshj4b0clb5afgn81m1ll5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,4 +1,4 @@
-package com.example.lecture_firebase
+package com.example.lecture46_firebase
 
 import io.flutter.embedding.android.FlutterActivity
 

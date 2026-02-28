@@ -20,13 +20,19 @@ class _SignupPageState extends State<SignupPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(border: OutlineInputBorder(), hintText: "Enter email"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: nameController,
+                decoration: InputDecoration(border: OutlineInputBorder(), hintText: "Enter email"),
+              ),
             ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(border: OutlineInputBorder(), hintText: "Enter password"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: passwordController,
+                decoration: InputDecoration(border: OutlineInputBorder(), hintText: "Enter password"),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -46,8 +52,11 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> signupUser(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("signup successful")));
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Signup successful")));
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
