@@ -21,6 +21,7 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
   TextEditingController phoneController = TextEditingController();
 
   List<Contact> contacts = [];
+  Contact? editContact;
 
   @override
   void initState() {
@@ -55,7 +56,14 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
                 // saveContact(name, phone);
 
                 Contact contact = Contact(name: name, phone: phone);
-                saveContact(contact);
+                if (editContact != null) {
+                  updateContact(contact, editContact!.id!);
+                  editContact = null;
+                  nameController.clear();
+                  phoneController.clear();
+                } else {
+                  saveContact(contact);
+                }
               },
               child: Text("Add Contact"),
             ),
@@ -67,7 +75,27 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
                   Contact contact = contacts[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListTile(title: Text(contact.name), subtitle: Text(contact.phone)),
+                    child: ListTile(
+                      title: Text(contact.name),
+                      subtitle: Text(contact.phone),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              editContact = contact;
+                              nameController.text = contact.name;
+                              phoneController.text = contact.phone;
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                          IconButton(onPressed: () {
+                            deleteContact(contact.id!);
+                          }, icon: Icon(Icons.delete)),
+                        ],
+                      ),
+                    ),
                   );
                 },
               ),
@@ -89,12 +117,10 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
 
       contacts.clear();
       data.forEach((key, value) {
-        Contact contact = Contact.fromJson(Map.castFrom(value));
+        Contact contact = Contact.fromJson(Map.castFrom(value), key);
         contacts.add(contact);
-      },);
-      setState(() {
-
       });
+      setState(() {});
     });
   }
 
@@ -102,6 +128,20 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
     DatabaseReference ref = FirebaseDatabase.instance.ref("users").push();
     await ref.set(contact.toJson());
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Contact saved successfully")));
+  }
+  
+  Future<void> updateContact(Contact contact, String id)
+  async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("users");
+    await ref.child(id).update(contact.toJson());
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Contact updated successfully")));
+  }
+
+  Future<void> deleteContact(String id)
+  async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("users");
+    await ref.child(id).remove();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Contact deleted successfully")));
   }
 
   /*Future<void> saveContact(String name, String phone) async {
@@ -116,16 +156,17 @@ class _RealtimeDatabaseCrudState extends State<RealtimeDatabaseCrud> {
 class Contact {
   String name;
   String phone;
+  String? id;
 
-  Contact({required this.name, required this.phone});
+  Contact({required this.name, required this.phone, this.id});
 
   // map to model class
-  factory Contact.fromJson(Map<String, dynamic> json) {
-    return Contact(name: json["name"], phone: json["phone"]);
+  factory Contact.fromJson(Map<String, dynamic> json, String id) {
+    return Contact(name: json["name"], phone: json["phone"], id: id);
   }
 
   // model class to map
-  Map toJson() {
+  Map<String, dynamic> toJson() {
     return {"name": name, "phone": phone};
   }
 }
